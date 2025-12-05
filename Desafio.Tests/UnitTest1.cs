@@ -36,9 +36,9 @@ namespace Desafio.Tests
             _context.Dispose();
         }
 
-        private BeneficiarioService CriarService() => new BeneficiarioService(_context, _mapper);
+        private BeneficiarioRepository CriarService() => new BeneficiarioRepository(_context, _mapper);
 
-        private async Task<BeneficiarioService> CriarServiceComBeneficiarioExistente(string cpf)
+        private async Task<BeneficiarioRepository> CriarServiceComBeneficiarioExistente(string cpf)
         {
             _context.Beneficiarios.Add(new BeneficiarioModel
             {
@@ -53,7 +53,7 @@ namespace Desafio.Tests
             return CriarService();
         }
 
-        private async Task<BeneficiarioService> CriarServiceComListaDeBeneficiarios()
+        private async Task<BeneficiarioRepository> CriarServiceComListaDeBeneficiarios()
         {
             _context.Beneficiarios.AddRange(new List<BeneficiarioModel>
     {
@@ -66,7 +66,7 @@ namespace Desafio.Tests
             return CriarService();
         }
 
-        private async Task<BeneficiarioService> CriarServiceComBeneficiarioAtivo()
+        private async Task<BeneficiarioRepository> CriarServiceComBeneficiarioAtivo()
         {
             _context.Beneficiarios.Add(new BeneficiarioModel
             {

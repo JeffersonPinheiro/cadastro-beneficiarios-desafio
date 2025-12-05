@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Desafio_Tecnico_Cadastro_de_Beneficiarios.Services
 {
-    public class BeneficiarioService : IBeneficiarioInterface
+    public class BeneficiarioRepository : IBeneficiarioInterface
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
 
-        public BeneficiarioService(AppDbContext context, IMapper mapper)
+        public BeneficiarioRepository(AppDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

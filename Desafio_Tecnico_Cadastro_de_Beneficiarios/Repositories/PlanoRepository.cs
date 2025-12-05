@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Desafio_Tecnico_Cadastro_de_Beneficiarios.Services
 {
-    public class PlanoService : IPlanoInterface
+    public class PlanoRepository : IPlanoInterface
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
 
-        public PlanoService(AppDbContext context, IMapper mapper)
+        public PlanoRepository(AppDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
