@@ -1,12 +1,14 @@
-using Desafio_Tecnico_Cadastro_de_Beneficiarios.Services;
-using Desafio_Tecnico_Cadastro_de_Beneficiarios.Data;
-using Desafio_Tecnico_Cadastro_de_Beneficiarios.Profiles;
-using Desafio_Tecnico_Cadastro_de_Beneficiarios.Services.Interface;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using System.Text.Json.Serialization;
-using Desafio_Tecnico_Cadastro_de_Beneficiarios.Extensions;
+using Desafio_Tecnico_Cadastro_de_Beneficiarios.Application.Services;
+using Desafio_Tecnico_Cadastro_de_Beneficiarios.Infrastructure.Persistence;
+using Desafio_Tecnico_Cadastro_de_Beneficiarios.Application.Interfaces;
+using Desafio_Tecnico_Cadastro_de_Beneficiarios.Domain.Interfaces;
+using Desafio_Tecnico_Cadastro_de_Beneficiarios.Infrastructure.UnitOfWork;
+using Desafio_Tecnico_Cadastro_de_Beneficiarios.Infrastructure.Repositories;
+using Desafio_Tecnico_Cadastro_de_Beneficiarios.Api.Middlewares;
+using Desafio_Tecnico_Cadastro_de_Beneficiarios.CrossCutting.Logging;
+using Desafio_Tecnico_Cadastro_de_Beneficiarios.Infrastructure.Workers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +22,14 @@ builder.Services.AddControllers();
 
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IPlanoInterface, PlanoRepository>();
-builder.Services.AddScoped<IBeneficiarioInterface, BeneficiarioRepository>();
+builder.Services.AddScoped<IPlanosService, PlanoService>();
+builder.Services.AddScoped<IBeneficiarioService, BeneficiarioService>();
+
+builder.Services.AddScoped<IBeneficiariosRepository, BeneficiariosRepository>();
+builder.Services.AddScoped<IPlanosRepository, PlanosRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddHostedService<ExclusaoBeneficiariosWorker>();
 
 builder.Services.AddAutoMapper(typeof(PlanoProfile).Assembly);
 
@@ -37,7 +45,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.ConfigureExceptionHandler();
+    app.UseMiddleware<ExceptionMiddleware>();
 }
 
 app.MapControllers();
